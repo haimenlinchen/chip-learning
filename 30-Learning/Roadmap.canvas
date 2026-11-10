@@ -1,0 +1,104 @@
+{
+  "nodes": [
+    {
+      "id": "roadmap",
+      "type": "file",
+      "file": "30-Learning/Roadmap.md",
+      "x": 0,
+      "y": 0,
+      "width": 380,
+      "height": 260
+    },
+    {
+      "id": "stage1",
+      "type": "file",
+      "file": "30-Learning/Stage-1-Scalar-Core.md",
+      "x": -760,
+      "y": 380,
+      "width": 320,
+      "height": 260
+    },
+    {
+      "id": "stage2",
+      "type": "file",
+      "file": "30-Learning/Stage-2-RVV-VME.md",
+      "x": -380,
+      "y": 380,
+      "width": 320,
+      "height": 260
+    },
+    {
+      "id": "stage3",
+      "type": "file",
+      "file": "30-Learning/Stage-3-GPU.md",
+      "x": 0,
+      "y": 380,
+      "width": 320,
+      "height": 260
+    },
+    {
+      "id": "stage4",
+      "type": "file",
+      "file": "30-Learning/Stage-4-Verification.md",
+      "x": 380,
+      "y": 380,
+      "width": 320,
+      "height": 260
+    },
+    {
+      "id": "stage5",
+      "type": "file",
+      "file": "30-Learning/Stage-5-SDK.md",
+      "x": 760,
+      "y": 380,
+      "width": 320,
+      "height": 260
+    },
+    {
+      "id": "note",
+      "type": "text",
+      "text": "原则：\n1. 先闭环再扩展\n2. 以 RTL 为准\n3. 每阶段动手改\n4. 每阶段有可观测证据",
+      "x": 0,
+      "y": 760,
+      "width": 520,
+      "height": 160
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "roadmap",
+      "fromSide": "bottom",
+      "toNode": "stage1",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "stage1",
+      "fromSide": "right",
+      "toNode": "stage2",
+      "toSide": "left"
+    },
+    {
+      "id": "e3",
+      "fromNode": "stage2",
+      "fromSide": "right",
+      "toNode": "stage3",
+      "toSide": "left"
+    },
+    {
+      "id": "e4",
+      "fromNode": "stage3",
+      "fromSide": "right",
+      "toNode": "stage4",
+      "toSide": "left"
+    },
+    {
+      "id": "e5",
+      "fromNode": "stage4",
+      "fromSide": "right",
+      "toNode": "stage5",
+      "toSide": "left"
+    }
+  ]
+}

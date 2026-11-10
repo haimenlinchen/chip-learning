@@ -1,0 +1,111 @@
+{
+  "nodes": [
+    {
+      "id": "hub",
+      "type": "file",
+      "file": "10-Projects/Vortex/Vortex.md",
+      "x": 0,
+      "y": 0,
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "simt",
+      "type": "file",
+      "file": "10-Projects/Vortex/Vortex-SIMT.md",
+      "x": -440,
+      "y": 360,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "cache",
+      "type": "file",
+      "file": "10-Projects/Vortex/Vortex-Cache.md",
+      "x": 0,
+      "y": 360,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "tcu",
+      "type": "file",
+      "file": "10-Projects/Vortex/Vortex-TCU.md",
+      "x": 440,
+      "y": 360,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "dxa",
+      "type": "file",
+      "file": "10-Projects/Vortex/Vortex-DXA.md",
+      "x": 880,
+      "y": 360,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "cp",
+      "type": "file",
+      "file": "10-Projects/Vortex/Vortex-CommandProcessor.md",
+      "x": 0,
+      "y": 720,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "note",
+      "type": "text",
+      "text": "DXA: GMEM → LMEM 异步搬运\nTCU: 从 LMEM 取 B 操作数\nCache: L1(socket 共享) / L2 / L3 / LMEM",
+      "x": 440,
+      "y": 720,
+      "width": 520,
+      "height": 160
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "hub",
+      "fromSide": "left",
+      "toNode": "simt",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "hub",
+      "fromSide": "bottom",
+      "toNode": "cache",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "hub",
+      "fromSide": "right",
+      "toNode": "tcu",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "simt",
+      "fromSide": "right",
+      "toNode": "cache",
+      "toSide": "left"
+    },
+    {
+      "id": "e5",
+      "fromNode": "dxa",
+      "fromSide": "left",
+      "toNode": "tcu",
+      "toSide": "right"
+    },
+    {
+      "id": "e6",
+      "fromNode": "cache",
+      "fromSide": "bottom",
+      "toNode": "cp",
+      "toSide": "top"
+    }
+  ]
+}

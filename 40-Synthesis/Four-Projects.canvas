@@ -1,0 +1,133 @@
+{
+  "nodes": [
+    {
+      "id": "axis-y",
+      "type": "text",
+      "text": "技术广度 ↑",
+      "x": -320,
+      "y": -220,
+      "width": 180,
+      "height": 70
+    },
+    {
+      "id": "axis-x",
+      "type": "text",
+      "text": "技术深度 →",
+      "x": 980,
+      "y": 760,
+      "width": 180,
+      "height": 70
+    },
+    {
+      "id": "label-coral",
+      "type": "text",
+      "text": "深而窄：单核执行引擎",
+      "x": 0,
+      "y": -90,
+      "width": 360,
+      "height": 60
+    },
+    {
+      "id": "label-vortex",
+      "type": "text",
+      "text": "深而广：计算全栈",
+      "x": 600,
+      "y": -90,
+      "width": 360,
+      "height": 60
+    },
+    {
+      "id": "label-sdk",
+      "type": "text",
+      "text": "广而偏软件：芯片软件平面",
+      "x": 0,
+      "y": 330,
+      "width": 360,
+      "height": 60
+    },
+    {
+      "id": "label-cosim",
+      "type": "text",
+      "text": "广而偏验证：多保真度平台",
+      "x": 600,
+      "y": 330,
+      "width": 360,
+      "height": 60
+    },
+    {
+      "id": "coral",
+      "type": "file",
+      "file": "10-Projects/CoralNPU/CoralNPU.md",
+      "x": 0,
+      "y": 0,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "vortex",
+      "type": "file",
+      "file": "10-Projects/Vortex/Vortex.md",
+      "x": 600,
+      "y": 0,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "sdk",
+      "type": "file",
+      "file": "10-Projects/Clounix-SDK/Clounix-SDK.md",
+      "x": 0,
+      "y": 420,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "cosim",
+      "type": "file",
+      "file": "10-Projects/ASIC-Cosim/ASIC-Cosim.md",
+      "x": 600,
+      "y": 420,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "compare",
+      "type": "file",
+      "file": "40-Synthesis/Four-Projects-Depth-Breadth.md",
+      "x": 300,
+      "y": 800,
+      "width": 520,
+      "height": 320
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-coral",
+      "fromNode": "coral",
+      "fromSide": "bottom",
+      "toNode": "compare",
+      "toSide": "top"
+    },
+    {
+      "id": "e-vortex",
+      "fromNode": "vortex",
+      "fromSide": "bottom",
+      "toNode": "compare",
+      "toSide": "top"
+    },
+    {
+      "id": "e-sdk",
+      "fromNode": "sdk",
+      "fromSide": "bottom",
+      "toNode": "compare",
+      "toSide": "top"
+    },
+    {
+      "id": "e-cosim",
+      "fromNode": "cosim",
+      "fromSide": "bottom",
+      "toNode": "compare",
+      "toSide": "top"
+    }
+  ]
+}

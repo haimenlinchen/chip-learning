@@ -1,0 +1,102 @@
+{
+  "nodes": [
+    {
+      "id": "hub",
+      "type": "file",
+      "file": "10-Projects/CoralNPU/CoralNPU.md",
+      "x": 0,
+      "y": 0,
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "pipeline",
+      "type": "file",
+      "file": "10-Projects/CoralNPU/CoralNPU-Pipeline.md",
+      "x": -420,
+      "y": 360,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "rvv",
+      "type": "file",
+      "file": "10-Projects/CoralNPU/CoralNPU-RVV.md",
+      "x": 0,
+      "y": 360,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "vme",
+      "type": "file",
+      "file": "10-Projects/CoralNPU/CoralNPU-VME.md",
+      "x": 420,
+      "y": 360,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "memory",
+      "type": "file",
+      "file": "10-Projects/CoralNPU/CoralNPU-Memory.md",
+      "x": 0,
+      "y": 720,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "verif",
+      "type": "file",
+      "file": "10-Projects/CoralNPU/CoralNPU-Verification.md",
+      "x": 840,
+      "y": 360,
+      "width": 360,
+      "height": 260
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "hub",
+      "fromSide": "left",
+      "toNode": "pipeline",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "hub",
+      "fromSide": "bottom",
+      "toNode": "rvv",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "hub",
+      "fromSide": "right",
+      "toNode": "vme",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "rvv",
+      "fromSide": "bottom",
+      "toNode": "memory",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "vme",
+      "fromSide": "bottom",
+      "toNode": "memory",
+      "toSide": "right"
+    },
+    {
+      "id": "e6",
+      "fromNode": "hub",
+      "fromSide": "right",
+      "toNode": "verif",
+      "toSide": "left"
+    }
+  ]
+}

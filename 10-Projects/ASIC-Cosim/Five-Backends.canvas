@@ -1,0 +1,141 @@
+{
+  "nodes": [
+    {
+      "id": "hub",
+      "type": "file",
+      "file": "10-Projects/ASIC-Cosim/ASIC-Cosim.md",
+      "x": 0,
+      "y": 0,
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "five",
+      "type": "file",
+      "file": "10-Projects/ASIC-Cosim/ASIC-Cosim-Five-Backends.md",
+      "x": 0,
+      "y": 340,
+      "width": 360,
+      "height": 260
+    },
+    {
+      "id": "cmodel",
+      "type": "file",
+      "file": "10-Projects/ASIC-Cosim/ASIC-Cosim-CMODEL.md",
+      "x": -660,
+      "y": 700,
+      "width": 340,
+      "height": 240
+    },
+    {
+      "id": "emu",
+      "type": "file",
+      "file": "10-Projects/ASIC-Cosim/ASIC-Cosim-EMU.md",
+      "x": -240,
+      "y": 700,
+      "width": 340,
+      "height": 240
+    },
+    {
+      "id": "rtl",
+      "type": "file",
+      "file": "10-Projects/ASIC-Cosim/ASIC-Cosim-RTL-DPI.md",
+      "x": 180,
+      "y": 700,
+      "width": 340,
+      "height": 240
+    },
+    {
+      "id": "sai",
+      "type": "file",
+      "file": "10-Projects/ASIC-Cosim/ASIC-Cosim-SAI-PTF.md",
+      "x": 600,
+      "y": 700,
+      "width": 340,
+      "height": 240
+    },
+    {
+      "id": "lab",
+      "type": "text",
+      "text": "LAB\n真实硬件（i2c/PCIe）",
+      "x": 1020,
+      "y": 700,
+      "width": 240,
+      "height": 140
+    },
+    {
+      "id": "nomodel",
+      "type": "text",
+      "text": "NOMODEL\n无模型，脚本/框架开发",
+      "x": 1020,
+      "y": 880,
+      "width": 240,
+      "height": 140
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "hub",
+      "fromSide": "bottom",
+      "toNode": "five",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "five",
+      "fromSide": "left",
+      "toNode": "cmodel",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "five",
+      "fromSide": "left",
+      "toNode": "emu",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "five",
+      "fromSide": "right",
+      "toNode": "rtl",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "five",
+      "fromSide": "right",
+      "toNode": "sai",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "five",
+      "fromSide": "right",
+      "toNode": "lab",
+      "toSide": "left"
+    },
+    {
+      "id": "e7",
+      "fromNode": "five",
+      "fromSide": "right",
+      "toNode": "nomodel",
+      "toSide": "left"
+    },
+    {
+      "id": "e8",
+      "fromNode": "sai",
+      "fromSide": "left",
+      "toNode": "cmodel",
+      "toSide": "right"
+    },
+    {
+      "id": "e9",
+      "fromNode": "sai",
+      "fromSide": "left",
+      "toNode": "rtl",
+      "toSide": "right"
+    }
+  ]
+}

@@ -39,6 +39,13 @@ created: 2026-11-10
 - [[Software-Interface]]
 - [[Performance-Modeling]]
 
+## 笔记与资产
+
+- [[Code-Reading-Index]]
+- [[Experiments-Index]]
+- [[Q-A-Index]]
+- [[Assets-Index]]
+
 ## 学习阶段
 
 - [[Stage-1-Scalar-Core]]

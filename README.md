@@ -43,6 +43,14 @@ Templates/      笔记模板
 - 每个实验记录 commit/配置/命令/原始输出。
 - 一个概念只在一个地方详细写，其他地方用双链指过去。
 
+## 校验
+
+```bash
+python3 scripts/validate_vault.py
+```
+
+CI 会在 push/PR 时运行同一脚本，检查 wikilink、frontmatter 与 Canvas JSON。
+
 ## 推荐阅读顺序
 
 1. `00-Home/Home.md`

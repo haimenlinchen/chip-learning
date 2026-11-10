@@ -28,9 +28,20 @@ created: 2026-11-10
 - `clounix-sdk-et/clx_sdk/src/tob/`
 - `clounix-sdk-et/app/sdk_sample/sdk_sample_init.c`
 
+## 代码阅读路线
+
+完整路线见 [[Clounix-SDK#代码阅读路线]]；本阶段按“一条链 → 逐层下沉 → 跨芯片对比”读。
+
+- 第 1–2 步：从 `clx_l2_addr_add` 这条链入手，先看清 API → HAL 分发的落点。
+- 第 3–5 步：依次读 `tob/tob.c` → `drv/drv_io.c`/`drv/drv_dma.c` → `osal/`。
+- 第 6 步：横向对比 `hal/mt/{nb,kg,et}/` 中的同名 `l2` 实现。
+- 第 7 步：最后看 `app/diag_shell/`、`app/neutrino_server/` 与 eCPU 路径。
+
+每读完一层，用 Hub 里该步的“读完能回答”自检，并把调用链补进本阶段的产出图。
+
 ## 任务
 
-- [ ] 跟踪 `clx_l2_add → hal_l2 → tob_table → drv → osal`
+- [ ] 跟踪 `clx_l2_addr_add → hal_mt_<chip>_l2_addr_add → tob_entry_write → drv_io_indir_entry_write → osal`
 - [ ] 理解 TOB（表项对象层，统一抽象 SRAM/TCAM/hash 等表资源；用于屏蔽底层表实现） 如何抽象 SRAM（静态随机存储器，片上高速存储；用于表项与缓存）/TCAM（三态内容寻址存储器，支持掩码匹配；用于 ACL 与路由查找）/hash（哈希表，按键值快速查找；用于转发表与流表）/table
 - [ ] 理解 HAL（硬件抽象层，屏蔽芯片差异；上层 API 的统一实现层） 如何隔离 NB/KG/ET（Clounix 三代交换芯片代号；HAL 按代隔离差异）
 - [ ] 理解 user/kernel（用户态与内核态；SDK 同时构建两种运行环境） 双空间构建

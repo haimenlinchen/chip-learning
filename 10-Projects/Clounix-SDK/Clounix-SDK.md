@@ -53,17 +53,25 @@ flowchart TB
 
 - [[Stage-5-SDK]]
 
-## 代码入口
+## 代码阅读路线
 
-- `clx_sdk/include/clx/`
-- `clx_sdk/src/clx/`
-- `clx_sdk/src/hal/`
-- `clx_sdk/src/tob/`
-- `clx_sdk/src/drv/`
-- `clx_sdk/src/osal/`
-- `app/sdk_sample/`
-- `app/diag_shell/`
-- `app/neutrino_server/`
+按“API 契约 → 一条完整调用链 → 逐层下沉 → 跨芯片对比 → 应用”的顺序读；路径相对 `source_repo`。不要从 `clx_sdk/src/` 第一行开始顺读，先抓住一条链。
+
+1. **先看 API 契约** — `clx_sdk/include/clx/clx_l2.h`、`clx_sdk/src/clx/clx_l2.c`；最小使用方式看 `app/sdk_sample/sdk_sample_init.c`
+   - 看：API 的参数、返回值、`Support_chip` 标注；应用初始化顺序。
+   - 读完能回答：一个上层应用最少需要调用哪些 API 才能下发一条 L2 表项？
+2. **跟一条 L2 调用链** — `clx_sdk/src/clx/clx_l2.c:clx_l2_addr_add` → `HAL_FUNC_CALL(unit, l2, addr_add, ...)` → `clx_sdk/src/hal/mt/<chip>/hal_mt_<chip>_l2.c:hal_mt_<chip>_l2_addr_add`；分发表看 `clx_sdk/src/hal/mt/<chip>/hal_mt_<chip>_drv.c`
+   - 读完能回答：`HAL_FUNC_CALL` 如何在编译期/运行期选到具体芯片实现？
+3. **看表项抽象 TOB** — `clx_sdk/src/tob/tob.c` 的 `tob_entry_write`/`tob_entry_read`、`tob_hash_entry_add`、`tob_dma_entry_write`；字段打包看 `clx_sdk/src/tob/tob_tbl.c` 的 `tob_tbl_*_pack`
+   - 读完能回答：SRAM/TCAM/hash/direct 表在 TOB 里如何统一成 entry + field 操作？
+4. **看驱动层 DRV** — `clx_sdk/src/drv/drv_io.c` 的 `drv_io_indir_entry_write`/`drv_io_indir_entry_read`、`clx_sdk/src/drv/drv_dma.c` 的 `drv_dma_entry_write`/`drv_dma_entry_read`
+   - 读完能回答：间接表项访问与 DMA 批量访问分别适合什么场景？
+5. **看 OS 抽象 OSAL** — `clx_sdk/src/osal/linux_user/osal.c`、`clx_sdk/src/osal/linux_kernel/`、`clx_sdk/src/osal/knet/`；构建变体看仓库根 `config.mk` 与 `clx_sdk/Makefile`
+   - 读完能回答：同一份 SDK 如何构建成用户态 `.so` 与内核态 `.ko`？knet 在哪一层接入 Linux 协议栈？
+6. **横向对比三代芯片** — `clx_sdk/src/hal/mt/nb/`、`clx_sdk/src/hal/mt/kg/`、`clx_sdk/src/hal/mt/et/` 中同名 `hal_mt_*_l2.c` 的实现差异
+   - 读完能回答：哪些逻辑必须 per-chip 实现？哪些被 `clx_sdk/src/hal/hal_cmn.c` 抽走？
+7. **最后看应用层** — `app/diag_shell/`（诊断 CLI）、`app/neutrino_server/`（RPC）；eCPU 路径看 `clx_sdk/src/hal/hal_ecpu.c`、`hal_ecpu_elink.c`、`hal_ecpu_ringbuffer.c` 与根目录 `ecpu_fw.mk`
+   - 读完能回答：CLI、RPC、直接 API 三条路径最终如何汇到同一套 HAL/TOB？
 
 ## 实验记录
 

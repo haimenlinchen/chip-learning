@@ -26,6 +26,20 @@ created: 2026-11-10
 - `coralnpu/doc/microarch/lsu.md`
 - `coralnpu/doc/microarch/mlu.md`
 
+## 代码阅读路线
+
+完整路线见 [[CoralNPU#代码阅读路线]]；本阶段只读第 1–6 步的标量部分，先跳过第 7–8 步（RVV/VME）。
+
+- 第 1 步：`doc/microarch/` 建立框图。
+- 第 2 步：`Core.scala` → `scalar/SCore.scala` 看顶层接线。
+- 第 3 步：`scalar/UncachedFetch.scala` → `scalar/Decode.scala` 跟取指、译码、派发。
+- 第 4 步：`Alu.scala`/`Bru.scala`/`Lsu.scala` 分别跟 `add`/`branch`/`load`。
+- 第 5 步：`RetirementBuffer.scala`/`Csr.scala`/`RvviTrace.scala` 看退休与 trace。
+- 第 6 步：`BankedItcm.scala`/`BankedDtcm.scala`/`Fabric.scala` 看存储与总线。
+- 第 9 步：用 `tests/cocotb/` 的一个标量测试闭环。
+
+每读完一步，用 Hub 里该步的“读完能回答”自检；答不上来就回到对应文件。
+
 ## 运行
 
 ```bash

@@ -29,6 +29,17 @@ created: 2026-11-10
 - `coralnpu/tests/uvm/README.md`
 - `asic-cosim/README.md`
 
+## 代码阅读路线
+
+完整路线见 [[ASIC-Cosim#代码阅读路线]] 与 [[CoralNPU#代码阅读路线]]；本阶段把“验证手段”本身当代码读。
+
+- ASIC-Cosim 第 1–3 步：`cosim_app*` 与 `*_access.cpp`，看五后端如何共享同一套控制面与访问语义。
+- ASIC-Cosim 第 4–6 步：分别深入 `cmodel/`、`rtl/`、`emu/`，记录每个后端能暴露的问题类型。
+- ASIC-Cosim 第 7–8 步：`mountains/nb/design.cpp` + `tests/features/test_l2.cpp`，跑通同一用例。
+- CoralNPU 第 5、9 步：`RetirementBuffer.scala`/`RvviTrace.scala` + `tests/cocotb/`、`tests/uvm/`，理解 lockstep 观测点。
+
+每读完一个后端，用 Hub 里该步的“读完能回答”自检，并把结论填进“保真度 vs 速度”对照表。
+
 ## 运行
 
 ### CoralNPU

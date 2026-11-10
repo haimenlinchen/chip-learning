@@ -91,15 +91,32 @@ flowchart LR
 - [[Stage-1-Scalar-Core]]
 - [[Stage-2-RVV-VME]]
 
-## 代码入口
+## 代码阅读路线
 
-- `doc/overview.md`
-- `doc/microarch/`
-- `hdl/chisel/src/coralnpu/scalar/`
-- `hdl/verilog/rvv/design/`
-- `hdl/verilog/rvv/design/Zvt/`
-- `tests/cocotb/`
-- `tests/uvm/`
+按“文档 → 顶层接线 → 单条指令 → 子系统 → 验证”的顺序读；路径相对 `source_repo`。每一步都给出“读完能回答”的问题，答不上来就停在原地补。
+
+1. **先建立框图** — `doc/overview.md`、`doc/microarch/microarch.md`、`doc/microarch/dispatch.md`、`doc/microarch/lsu.md`、`doc/microarch/mlu.md`
+   - 看：4 宽顺序派发、执行单元数量、ITCM/DTCM 与 AXI/TileLink 的位置。
+   - 读完能回答：一条指令从取指到退休经过哪些模块？哪些操作会写回？
+2. **看顶层如何接线** — `hdl/chisel/src/coralnpu/Core.scala` → `hdl/chisel/src/coralnpu/scalar/SCore.scala`
+   - `Core` 例化 `SCore` 与 `RvvCore`；`SCore` 例化 `DispatchV2`、`Lsu`、`RetirementBuffer`。
+   - 读完能回答：标量核与向量核之间有哪些边界信号（命令、写回、trap）？
+3. **跟取指、译码与派发** — `scalar/UncachedFetch.scala`（`Fetcher`/`FetchControl`/`FetchReorderBuffer`）→ `scalar/Decode.scala`（`Dispatch`/`DispatchV2`）
+   - 先看 `Decode.scala` 的指令表与 `DispatchV2` 的发射、scoreboard（记分板，跟踪寄存器与执行单元就绪状态；用于动态调度）逻辑。
+   - 读完能回答：RAW/WAW 在哪里检测？指令槽位限制（如 CSR 限制在 slot 0）在哪里实现？
+4. **跟三条代表性指令** — `scalar/Alu.scala`（`add`）、`scalar/Bru.scala`（`branch`）、`scalar/Lsu.scala`（`load`）；旁路看 `scalar/Mlu.scala`、`scalar/Dvu.scala`、`scalar/Fpu.scala`
+   - 读完能回答：`load` 的地址计算、DTCM/AXI 选择、写回各在哪一段？多周期单元如何占用 scoreboard？
+5. **看退休、异常与观测** — `RetirementBuffer.scala`、`scalar/Csr.scala`、`RvviTrace.scala`
+   - 重点：按序退休、trap 清理、RVVI 观测点。
+   - 读完能回答：分支冲刷时年轻指令如何回收？trace 的指令与寄存器数据从哪里取？
+6. **看存储与总线** — `BankedItcm.scala`、`BankedDtcm.scala`、`TCM.scala`、`Fabric.scala`、`CoreAxi.scala`
+   - 读完能回答：4 个 DTCM bank 如何仲裁？AXI master/slave 各自服务谁？
+7. **进入 RVV 后端** — `rvv/RvvCore.scala`、`rvv/RvvDecode.scala`、`rvv/RvvInterface.scala`；再读 Verilog：`hdl/verilog/rvv/design/RvvFrontEnd.sv` → `rvv_backend.sv` → `rvv_backend_decode.sv` → `rvv_backend_dispatch.sv` → `rvv_backend_rob.sv` → `rvv_backend_retire.sv`；访存看 `rvv_backend_lsu_remap.sv`
+   - 读完能回答：命令队列、μop 队列、保留站、VROB（向量重排序缓冲）分别解决什么问题？`vstart`（向量起始元素索引）在哪里更新？
+8. **进入矩阵扩展** — `hdl/verilog/rvv/design/Zvt/zvt.sv` → `zvt_ctrl.sv` → `zvt_mt.sv` → `zvt_mt_reg.sv` → `zvt_pe_array.sv` → `zvt_pe_block.sv`
+   - 读完能回答：M/N/K 如何变成 PE array（处理单元阵列）的循环边界？tile 如何与 DTCM 对齐？
+9. **用测试闭环** — `tests/cocotb/`、`tests/uvm/`、`doc/simulation.md`
+   - 每读完一个子系统，找一个对应 test 跑通，再回 RTL 对照波形；不要只读不跑。
 
 ## 实验记录
 

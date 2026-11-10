@@ -26,6 +26,17 @@ created: 2026-11-10
 - `coralnpu/hdl/verilog/rvv/design/`
 - `coralnpu/hdl/verilog/rvv/design/Zvt/`
 
+## 代码阅读路线
+
+完整路线见 [[CoralNPU#代码阅读路线]]；本阶段读第 1、2、6、7、8 步，重点是第 7–8 步。
+
+- 第 2 步：先看 `Core.scala` 与 `scalar/SCore.scala` 中标量核和 `RvvCore` 的接口。
+- 第 7 步：按 `rvv/RvvCore.scala` → `rvv/RvvDecode.scala` → `rvv/RvvInterface.scala` → `hdl/verilog/rvv/design/RvvFrontEnd.sv` → `rvv_backend*.sv` 读。
+- 第 8 步：按 `Zvt/zvt.sv` → `zvt_ctrl.sv` → `zvt_mt.sv` → `zvt_pe_array.sv` → `zvt_pe_block.sv` 读。
+- 第 9 步：用 `tests/cocotb/` 的 RVV 测试闭环，对照 `vstart` 与异常路径。
+
+每读完一步，用 Hub 里该步的“读完能回答”自检。
+
 ## 运行
 
 ```bash

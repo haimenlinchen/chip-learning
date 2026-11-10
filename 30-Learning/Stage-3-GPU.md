@@ -28,6 +28,18 @@ created: 2026-11-10
 - [[Performance-Modeling]]
 - `vortex/docs/designs/`
 
+## 代码阅读路线
+
+完整路线见 [[Vortex#代码阅读路线]]；本阶段建议按 1 → 2 → 3 → 7 的顺序，先建立“一个 warp 的生命周期”，再用 simx 对照 RTL。
+
+- 第 1 步：`docs/designs/microarchitecture.md` + `VX_gpu_pkg.sv`，建立 thread/warp/core/socket/cluster 层次。
+- 第 2 步：`hw/rtl/core/VX_core.sv` → `VX_scheduler.sv` → `VX_fetch.sv` → `VX_decode.sv` → `VX_issue.sv` → `VX_execute.sv` → `VX_commit.sv`。
+- 第 3 步：`docs/designs/cache_subsystem.md` → `hw/rtl/cache/VX_cache.sv` → `VX_cache_mshr.sv`。
+- 第 7 步：`sim/simx/core.cpp` → `scheduler.cpp` → `scoreboard.cpp`，与 RTL 同一机制对照。
+- 第 4–5 步（TCU/DXA）留到本阶段任务里的矩阵实验再展开。
+
+每读完一步，用 Hub 里该步的“读完能回答”自检。
+
 ## 运行
 
 ```bash

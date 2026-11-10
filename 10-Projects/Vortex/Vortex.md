@@ -75,16 +75,28 @@ flowchart TB
 
 - [[Stage-3-GPU]]
 
-## 代码入口
+## 代码阅读路线
 
-- `docs/designs/microarchitecture.md`
-- `docs/designs/cache_subsystem.md`
-- `docs/designs/tensor_core_wgmma_engine.md`
-- `docs/designs/dxa_async_copy_multicast.md`
-- `docs/designs/command_processor.md`
-- `VX_config.toml`
-- `hw/rtl/`
-- `sim/simx/`
+按“总览 → 一个 warp 的生命周期 → 存储 → 加速器 → host 接口 → 周期模型 → 软件栈”的顺序读；路径相对 `source_repo`。RTL 与 simx 成对阅读，同一个机制在两处各看一遍。
+
+1. **先建立总览** — `docs/designs/microarchitecture.md`、`VX_config.toml`；再扫 `hw/rtl/VX_gpu_pkg.sv`、`VX_cluster.sv`、`VX_socket.sv`
+   - 看：thread → warp → core → socket → cluster 的层次，以及配置如何改变这些数量。
+   - 读完能回答：warp 由谁调度？L1 为什么挂在 socket 上？
+2. **跟一个 warp 的生命周期** — `hw/rtl/core/VX_core.sv` → `VX_scheduler.sv` → `VX_fetch.sv` → `VX_decode.sv` → `VX_ibuffer.sv` → `VX_issue.sv`/`VX_issue_slice.sv` → `VX_operands.sv` → `VX_execute.sv` → `VX_commit.sv`
+   - 冒险看 `VX_scoreboard.sv`；分支重汇聚看 `VX_ipdom_stack.sv`；CTA 派发看 `VX_cta_dispatch.sv`。
+   - 读完能回答：分支发散后如何在 IPDOM 处重汇聚？scoreboard 如何为每个 warp 判定可发射？
+3. **看存储层次** — `docs/designs/cache_subsystem.md` → `hw/rtl/cache/VX_cache.sv` → `VX_cache_bank.sv`、`VX_cache_tags.sv`、`VX_cache_data.sv`、`VX_cache_mshr.sv`、`VX_cache_repl.sv`、`VX_amo_unit.sv`；访存单元看 `hw/rtl/core/VX_lsu_unit.sv`、`VX_lsu_scheduler.sv`、`VX_lsu_agu.sv`、`VX_mem_unit.sv`
+   - 读完能回答：MSHR 如何合并同一 cache line 的缺失？AMO 为什么只在 LLC 执行？
+4. **进入 TCU** — `docs/designs/tensor_core_wgmma_engine.md` → `hw/rtl/tcu/VX_tcu_unit.sv` → `VX_tcu_wgmma.sv` → `VX_tcu_uops.sv`/`VX_tcu_meta.sv` → `VX_tcu_core.sv` → `VX_tcu_abuf.sv`/`VX_tcu_bbuf.sv`/`VX_tcu_tbuf.sv`
+   - 读完能回答：WGMMA 的 A/B 操作数如何从 LMEM 进入 buffer？2:4 稀疏在哪里生效？
+5. **进入 DXA** — `docs/designs/dxa_async_copy_multicast.md` → `hw/rtl/dxa/VX_dxa_unit.sv` → `VX_dxa_core.sv` → `VX_dxa_desc_table.sv` → `VX_dxa_dispatch.sv` → `VX_dxa_worker.sv` → `VX_dxa_smem_wr.sv`
+   - 读完能回答：一条拷贝描述符如何拆分给多个 worker？multicast 如何减少 GMEM 读放大？
+6. **看 host 接口与命令处理器** — `docs/designs/command_processor.md` → `hw/rtl/cp/VX_cp_core.sv` → `VX_cp_engine.sv` → `VX_cp_launch.sv`、`VX_cp_dma.sv`、`VX_cp_completion.sv`、`VX_cp_axil_regfile.sv`
+   - 读完能回答：一个 kernel launch 从 AXI-Lite 寄存器到 CTA 派发经过哪些状态？
+7. **用 simx 对照 RTL** — `docs/designs/simx_simulator_architecture.md` → `sim/simx/processor.cpp` → `cluster.cpp` → `socket.cpp` → `core.cpp` → `scheduler.cpp` → `dispatcher.cpp` → `scoreboard.cpp` → `lsu_unit.cpp`；加速器看 `sim/simx/tcu/`、`sim/simx/dxa/`
+   - 读完能回答：simx 省略了哪些 RTL 细节？哪些周期差异是模型简化造成的？
+8. **最后看软件栈与回归** — `docs/designs/vortex_runtime_api.md` → `sw/runtime/` → `tests/regression/`、`tests/opencl/`
+   - 读完能回答：host 如何把 kernel 参数与 grid 配置写进命令缓冲区？
 
 ## 实验记录
 

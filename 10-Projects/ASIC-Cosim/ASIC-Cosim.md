@@ -55,16 +55,28 @@ flowchart TB
 
 - [[Stage-4-Verification]]
 
-## 代码入口
+## 代码阅读路线
 
-- `README.md`
-- `src/cosim/cmodel/cmodel.h`
-- `src/cosim/rtl/rtl_dpi.h`
-- `src/cosim/emu/emu.h`
-- `src/cosim/lab/`
-- `src/cosim/mountains/{nb,kg}/`
-- `tests/features/`
-- `saithriftv2/ptf/`
+按“总览 → 后端入口 → 统一访问口 → 单个后端 → 流水线模型 → 测试”的顺序读；路径相对 `source_repo`。五后端共享同一套入口，先横向对比，再纵向深入。
+
+1. **先看清五后端的关系** — `README.md`、`src/cosim/cosim_app.hpp`、`src/cosim/cosim_app_c.cpp`
+   - 看：同一套控制面如何选择后端，`cosim_app` 抽象了哪些动作（init/register access/packet）。
+   - 读完能回答：CMODEL/EMU/RTL/LAB/NOMODEL 的共同接口是什么？
+2. **横向对比五个入口** — `src/cosim/run_cosim_cmodel.cpp`、`run_cosim_rtl.cpp`、`run_cosim_emu.cpp`、`run_cosim_lab.cpp`、`run_cosim_nomodel.cpp`
+   - 只读 `main` 与初始化顺序，不展开实现；比较谁注册了什么、谁打开了设备。
+   - 读完能回答：换后端时控制面代码为什么不用改？
+3. **看统一访问口** — `src/cosim/cmodel/cmodel_access.cpp`、`rtl/rtl_access.cpp`、`emu/emu_access.cpp`、`lab/lab_access.cpp`、`nomodel/nomodel.cpp`；C ABI 看 `cmodel/cmodel.h`
+   - 读完能回答：寄存器读写、表项读写、backdoor 在五后端如何保持同一语义？
+4. **深入 CMODEL** — `src/cosim/cmodel/cmodel.cpp` → `cmodel/nb/cmodel_nb.cpp` 或 `cmodel/kg/cmodel_kg.cpp`；backdoor 看 `cmodel/nb/cmodel_backdoor.cpp`
+   - 读完能回答：C-model 的流水线模型如何组织？软件 backdoor 与正常寄存器路径差别在哪？
+5. **深入 RTL/DPI** — `src/cosim/rtl/rtl.cpp` → `rtl/rtl_dpi.cpp` + `rtl/rtl_dpi.h`；前端口看 `rtl/rtl_frontport.cpp`
+   - 读完能回答：DPI 调用在什么边界穿过 SV/C？周期推进由谁驱动？
+6. **深入 EMU** — `src/cosim/emu/emu.cpp` → `emu/emu_pcie.cpp`、`emu/emu_dma.cpp`、`emu/emu_irq.cpp`、`emu/emu_cpuport.cpp`；内核侧看 `emu/nb-knet/`
+   - 读完能回答：PCIe/knet 路径与 RTL 路径分别能暴露哪类问题？
+7. **看交换流水线模型** — `src/cosim/mountains/README.md` → `mountains/nb/design.cpp` → `mountains/nb/pp/`（解析/入方向）→ `mountains/nb/pl/`（查表）→ `mountains/nb/tm/`（队列/调度）→ `mountains/nb/pcx/`（交叉开关）
+   - 读完能回答：一个报文从入口到出口依次经过哪些模型？TM 的拥塞在哪里体现？
+8. **用测试闭环** — `tests/features/README.md` → `tests/features/test_l2.cpp` → `run_feature_gtest.cpp`；数据面看 `saithriftv2/ptf/`
+   - 读完能回答：同一个 feature test 在 CMODEL 与 RTL 上如何跑、结果如何比对？
 
 ## 实验记录
 

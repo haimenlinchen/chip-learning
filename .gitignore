@@ -1,7 +1,5 @@
-# Obsidian workspace state
-.obsidian/workspace.json
-.obsidian/workspace-mobile.json
-.obsidian/cache
+# Obsidian 本地配置/插件/workspace 状态
+.obsidian/
 .trash/
 
 # OS
@@ -15,6 +13,9 @@ Thumbs.db
 # Tool/session state
 .omc/
 .omx/
+.claude/
+.copilot/
+copilot/
 
 # Large assets (按需取消注释)
 # 90-Assets/images/*.mp4

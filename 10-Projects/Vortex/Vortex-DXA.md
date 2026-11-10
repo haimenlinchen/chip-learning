@@ -29,6 +29,24 @@ DXA（Direct eXecution Accelerator）是 NVIDIA Hopper TMA 风格的异步批量
 - multicast：`cta_mask` 多 bit 时，读一次 GMEM，按 `smem_stride` 重放到多个 CTA。
 - 完成：最后一个 cache line 带 completion flag，写入 LMEM 后通过 `txbar` 释放 barrier。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    WARP["Warp issue<br/>vx_wgather"] --> UNIT["DXA Unit<br/>per core"]
+    UNIT --> Q["Cluster Queue (16)"]
+    Q --> DESC["Descriptor Table (16)"]
+    DESC --> DISP["Dispatch"]
+    DISP --> W["Worker"]
+    W --> SETUP["Setup"]
+    SETUP --> AG["Addr Gen<br/>rolling cursor"]
+    AG --> GR["GMEM Read<br/>max 8 in flight"]
+    GR --> SW["SMEM Write<br/>barrel shift"]
+    SW --> BAR["Barrier completion"]
+    SW -->|multicast| CTA["Other CTAs"]
+    SW -->|K-major| TCU["TCU"]
+```
+
 ## 关键细节
 
 - ISA：`INST_SFU_DXA`（SFU opcode 9），custom0/funct7=3；4 lane `vx_wgather` 打包参数。

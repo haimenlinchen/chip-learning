@@ -32,6 +32,22 @@ SDK 用“统一 API + 分层 mt 目录”支持多代交换芯片：NamchaBarwa
 - `clx_cfg.h`：`CLX_CFG_MAXIMUM_CHIPS_PER_SYSTEM = 2`、`CLX_CFG_MAXIMUM_CORES_PER_CHIP = 4`。
 - 构建期通过 `ENABLED_CHIPS` 选择芯片；运行期通过 `unit`/`inst_idx` 区分实例。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    CFG["ENABLED_CHIPS"] --> BUILD["Build"]
+    BUILD --> NB["NB"]
+    BUILD --> KG["KG"]
+    BUILD --> ET["ET"]
+    NB --> HALN["hal/mt/nb"]
+    KG --> HALK["hal/mt/kg"]
+    ET --> HALE["hal/mt/et"]
+    HALN --> API["Unified clx_* API"]
+    HALK --> API
+    HALE --> API
+```
+
 ## 关键细节
 
 - 多芯片系统里，SDK 需要处理跨芯片的端口、LAG、L2/L3 多播索引偏移。

@@ -36,6 +36,24 @@ HAL 负责“芯片相关但 API 无关”的逻辑；TOB（Table Operation Bus�
 - `tob.h` 定义 `tob_entry_info_t`、`tob_fvp_t`、DMA 内存对齐宏、instance 广播常量。
 - 广播：`TOB_INST_IDX_BCAST`、`TOB_ODD/EVEN_INST_IDX_BCAST`、`TOB_MASTER/SLAVE_INST_IDX_BCAST`。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    API["CLX API"] --> HAL["HAL"]
+    HAL --> COMMON["hal/mt/common"]
+    HAL --> NB["hal/mt/nb"]
+    HAL --> KG["hal/mt/kg"]
+    HAL --> ET["hal/mt/et"]
+    HAL --> TOB["TOB"]
+    TOB --> SRAM["SRAM table"]
+    TOB --> TCAM["TCAM"]
+    TOB --> HASH["Hash"]
+    TOB --> TBL["Table ops"]
+    TOB --> DRV["DRV"]
+    DRV --> OSAL["OSAL"]
+```
+
 ## 关键细节
 
 - TOB 的 DMA 内存分配要求 16B 对齐（`TOB_DMA_MEM_ALLOC`）。

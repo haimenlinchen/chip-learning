@@ -24,6 +24,18 @@ Clounix 交换 ASIC 的软件 SDK：把多代交换芯片的差异压进 HAL/TOB
 - 表项：TOB 抽象 SRAM/TCAM/hash/table
 - 系统：user/kernel 双空间、knet、eCPU 固件
 
+## 架构图
+
+```mermaid
+flowchart TB
+    APP["Applications<br/>diag_shell / neutrino_server / sdk_sample / sdk_ref / sdk_asicsim"] --> API["CLX API<br/>~37 modules"]
+    API --> HAL["HAL<br/>hal_*.c + hal/mt/nb/kg/et"]
+    HAL --> TOB["TOB<br/>SRAM / TCAM / hash / table"]
+    TOB --> DRV["DRV<br/>io / dma + drv/mt"]
+    DRV --> OSAL["OSAL<br/>linux_user / linux_kernel / knet"]
+    OSAL --> ASIC["ASIC<br/>NB / KG / ET"]
+```
+
 ## 关键子系统
 
 - [[Clounix-SDK-Layering]]

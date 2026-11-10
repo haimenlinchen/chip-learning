@@ -35,6 +35,21 @@ core → socket (L1) → cluster (L2) → L3 → memory
 - LLC 判定：`DCACHE_IS_LLC = !L2 && !L3`；`L2_IS_LLC = L2 && !L3`；`L3_IS_LLC = L3`。
 - 私有 L1 是 write-through；只有 LLC 可以 write-back。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    CORE["Cores"] --> L1["Socket L1<br/>I/D cache 16KB 4-way"]
+    L1 --> L2["Cluster L2<br/>1MB 8-way (optional)"]
+    L2 --> L3["Global L3<br/>2MB 8-way (optional)"]
+    L3 --> DRAM["DRAM / HBM"]
+    L1 --- LMEM["LMEM / Shared Memory"]
+    L2 --- MSHR["MSHR + sectored line"]
+    L3 --- AMO["AMO at LLC"]
+    L1 -. "L2/L3 disabled" .-> BYPASS["VX_cache_bypass"]
+    BYPASS -.-> DRAM
+```
+
 ## 关键细节
 
 - 多核必须有共享层：`cores > 1` 且无 L2 时，每个 socket 独立写内存，store 会丢。

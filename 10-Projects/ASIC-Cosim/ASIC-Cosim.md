@@ -24,6 +24,19 @@ Clounix 内部 ASIC 验证协同仿真环境：同一套 SAI/CLI/PTF 控制面�
 - 控制面：SAI-Thrift、CLI telnet、PTF、pytest、gtest、pcap、traffic、chassis、netlink/FRR
 - 调试：iPython / iCling / Jupyter / gdb / valgrind
 
+## 架构图
+
+```mermaid
+flowchart TB
+    TEST["Tests / SAI / CLI / PTF"] --> ENV["Cosim Control Plane"]
+    ENV --> CM["CMODEL<br/>libcx_model.so"]
+    ENV --> EMU["EMU<br/>PCIe / knet"]
+    ENV --> RTL["RTL<br/>DPI"]
+    ENV --> LAB["LAB<br/>real hardware"]
+    ENV --> NM["NOMODEL"]
+    CM --> PIPE["Switch pipeline model<br/>PP / PL / TM / PCX / CSS / IGR / EGR / FPU"]
+```
+
 ## 关键子系统
 
 - [[ASIC-Cosim-Five-Backends]]

@@ -29,6 +29,21 @@ VME（Vector Matrix Extension）/ Zvt 是 CoralNPU 中实验性的矩阵扩展�
 - 硬件 accumulator（`zvt_acc`）与 transpose（`zvt_mt`）。
 - `mload`/`mstore` 直接与 LSU/DTCM 耦合，2D tile 流式加载/写回。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    CSR["M/N/K CSRs<br/>mtype / msetmtype / msettn / msettm / msettk"] --> CTRL["VME Control"]
+    CTRL --> PE["PE Array"]
+    MT["Matrix Tiles<br/>mt0..mt15<br/>4 sub-tile blocks<br/>16B subtiles"] --> PE
+    PE --> ACC["Accumulator<br/>zvt_acc"]
+    ACC --> MT
+    MT --> TR["Transpose<br/>zvt_mt"]
+    TR --> PE
+    LSU["LSU / DTCM"] -->|mload| MT
+    MT -->|mstore| LSU
+```
+
 ## 关键细节
 
 - 支持 INT8、FP32、BF16。

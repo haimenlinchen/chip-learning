@@ -40,6 +40,18 @@ OSAL        linux_user / linux_kernel / knet
 ASIC        NamchaBarwa(NB) / Kawagarbo(KG) / Everest(ET)
 ```
 
+## 架构图
+
+```mermaid
+flowchart TB
+    APP["app/<br/>diag_shell / neutrino_server / sdk_sample / sdk_ref / sdk_asicsim / sdk_phy_lib"] --> API["CLX API<br/>~37 modules"]
+    API --> HAL["HAL<br/>hal_*.c + hal/mt/nb/kg/et + mock"]
+    HAL --> TOB["TOB<br/>sram / tcam / hash / tbl"]
+    TOB --> DRV["DRV<br/>drv_io / drv_dma + drv/mt"]
+    DRV --> OSAL["OSAL<br/>linux_user / linux_kernel / knet"]
+    OSAL --> HW["ASIC<br/>NB / KG / ET"]
+```
+
 ## 关键细节
 
 - `WORK_SPACE` 可切 `USER_SPACE` / `KERNEL_SPACE`；用户态产出 `libclx_sdk.so`，内核态产出 `clx_dev.ko`/`clx_sdk.ko`。

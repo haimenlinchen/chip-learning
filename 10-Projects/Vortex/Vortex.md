@@ -25,6 +25,35 @@ created: 2026-11-10
 - 加速器：TCU（WGMMA）、DXA、RTU、光栅化/纹理/OM
 - 系统：命令处理器 + KMU + DCR + PCIe AFU
 
+## 架构图
+
+```mermaid
+flowchart TB
+    HOST["Host / PCIe"] --> CP["Command Processor<br/>N queues + KMU + DMA + DCR"]
+
+    subgraph GPU["Vortex GPU"]
+        subgraph CL["Cluster"]
+            SOCK["Sockets<br/>L1 shared"]
+            CORE["Cores<br/>warp scheduler + SIMT"]
+            TCU["TCU (WGMMA)"]
+            DXA["DXA"]
+            RTU["RTU"]
+            GFX["Raster / TEX / OM"]
+            L2["L2 per cluster"]
+        end
+        L3["Global L3"]
+        MEM["Memory / HBM"]
+    end
+
+    CP --> SOCK
+    SOCK --> L2 --> L3 --> MEM
+    CORE --> SOCK
+    TCU --> SOCK
+    DXA --> SOCK
+    RTU --> SOCK
+    GFX --> SOCK
+```
+
 ## 关键子系统
 
 - [[Vortex-SIMT]]

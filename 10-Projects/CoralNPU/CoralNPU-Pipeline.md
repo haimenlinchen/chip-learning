@@ -34,6 +34,24 @@ Fetch (128-bit) → Decode/Dispatch (4-way) → Execute/Writeback → Retirement
 - LSU：每周期最多 1 条内存指令。
 - Scoreboard：跟踪 RAW/WAW；所有单元在派发后下一周期读寄存器，因此不会出现 WAR。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    F["Fetch<br/>128-bit"] --> D["Decode<br/>4-way"]
+    D --> DP["Dispatch<br/>scoreboard + interlock"]
+    DP --> E["Execute"]
+    E --> W["Writeback"]
+    W --> R["Retirement Buffer / ROB"]
+
+    E --- ALU["4x ALU"]
+    E --- BRU["4x BRU"]
+    E --- MLU["MLU<br/>2-cycle"]
+    E --- DVU["DVU<br/>multi-cycle"]
+    E --- FPU["FPU"]
+    E --- LSU["LSU<br/>1 per cycle"]
+```
+
 ## 关键细节
 
 - 文档口径：`microarch.md` 写 3 级流水，README 写 4 级；以 RTL 为准。

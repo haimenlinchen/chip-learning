@@ -39,6 +39,10 @@ created: 2026-11-10
 - [[Software-Interface]]
 - [[Performance-Modeling]]
 
+## 架构图
+
+- [[Architecture-Diagrams]]
+
 ## 笔记与资产
 
 - [[Code-Reading-Index]]

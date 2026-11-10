@@ -33,6 +33,21 @@ CoralNPU 使用 scratchpad（TCM）而非 cache：ITCM 放指令，DTCM 放数�
 - DMA：多通道 2D/1D，外部内存 ↔ TCM。
 - 中断：PLIC + CLINT；调试：RISC-V Debug Module。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    IBUS["IBus 128-bit"] --> XBAR["Local Crossbar"]
+    DBUS["DBus 128-bit<br/>scalar / vector / matrix"] --> XBAR
+    HOST["Host AXI Slave"] --> XBAR
+    XBAR --> ITCM["ITCM 8KB-1MB<br/>4x32b banks"]
+    XBAR --> DTCM["DTCM 32KB-1MB<br/>4x32b banks"]
+    XBAR --> CSR["CSR 0x30000"]
+    XBAR --> EXT["AXI4 Master / TL-UL<br/>external memory"]
+    DMA["DMA Engine"] <--> XBAR
+    PLIC["PLIC / CLINT"] --> CORE["Core"]
+```
+
 ## 关键细节
 
 - 无 cache 层次，因此没有 cache 一致性协议；单核 TSO，`FENCE` 在硬件中当 NOP，`FENCE.I` 负责 drain store 并 flush fetch。

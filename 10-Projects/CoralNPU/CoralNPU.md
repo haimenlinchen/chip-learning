@@ -25,6 +25,51 @@ Google Research 开源的 RISC-V 边缘 ML NPU IP，面向可穿戴设备；标�
 - 存储：8KB ITCM + 32KB DTCM（可配到 1MB/1MB），无 cache
 - 总线：AXI4 master/slave 或 TileLink-UL
 
+## 架构图
+
+```mermaid
+flowchart LR
+    subgraph FE["Scalar Frontend (4-wide)"]
+        F["Fetch<br/>128-bit"] --> D["Decode / Dispatch"]
+        D --> S["Scoreboard + ROB"]
+    end
+
+    subgraph SC["Scalar Execution"]
+        ALU["4x ALU"]
+        BRU["4x BRU"]
+        MLU["1x MLU<br/>2-cycle"]
+        DVU["1x DVU"]
+        FPU["FPU<br/>FP32 / BF16"]
+        LSU["LSU"]
+    end
+
+    subgraph VB["Decoupled Vector / Matrix"]
+        CQ["Command Queue (8)"] --> VD["2-stage Vector Decode"]
+        VD --> UQ["Uop Queue (16)"]
+        UQ --> RS["Reservation Stations"]
+        RS --> VU["2x VALU / 2x VMUL<br/>1x VDIV / 2x VFALU<br/>1x VFDIV / Reduction"]
+        VU --> VR["Vector Regfile<br/>32 x 128-bit"]
+        VR --> VROB["Vector ROB (16)"]
+        RS --> VME["VME / Zvt<br/>16 Matrix Tiles + PE Array"]
+    end
+
+    subgraph MEM["Memory"]
+        ITCM["ITCM 8KB<br/>up to 1MB"]
+        DTCM["DTCM 32KB<br/>up to 1MB"]
+        XBAR["Banked Crossbar"]
+        AXI["AXI4 Master/Slave<br/>or TL-UL"]
+    end
+
+    D --> SC
+    D --> CQ
+    LSU <--> XBAR
+    VU <--> LSU
+    VME <--> LSU
+    XBAR <--> ITCM
+    XBAR <--> DTCM
+    XBAR <--> AXI
+```
+
 ## 关键子系统
 
 - [[CoralNPU-Pipeline]]

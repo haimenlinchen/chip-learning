@@ -37,6 +37,19 @@ DPI API（`rtl_dpi.h`）：
 - cosim → RTL：read/write/send/reset/cmd 的发起。
 - RTL → cosim：poll 取请求、done 回调、recv 回调。
 
+## 架构图
+
+```mermaid
+sequenceDiagram
+    participant C as Cosim
+    participant R as RTL DUT
+    C->>R: nbrtl_reg32_write / nbrtl_pkt_send
+    R->>C: nbrtl_reg32_rdwr_poll
+    R->>C: nbrtl_pkt_send_poll
+    R->>C: nbrtl_pkt_recv_callback
+    R->>C: nbrtl_reg32_rdwr_done
+```
+
 ## 关键细节
 
 - 支持多实例（`inst` 参数），可做 multi-DUT。

@@ -28,6 +28,22 @@ CP（Command Processor）是 host 向 GPU 提交工作的唯一控制面：拷�
 - host 侧每命令成本：一次 memcpy 到 pinned ring + 一次 doorbell。
 - 设备侧负责 fetch/decode/sequence/completion。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    HOST["Host memory<br/>command ring"] --> CP["CP fetch"]
+    CP --> Q["N command engines"]
+    Q --> A1["KMU launch"]
+    Q --> A2["DMA"]
+    Q --> A3["DCR bus"]
+    Q --> A4["Event unit"]
+    A1 --> GPU["GPU"]
+    A2 --> MEM["Memory"]
+    A3 --> REG["Registers"]
+    A4 --> HOST
+```
+
 ## 关键细节
 
 - 命令 ABI：4B header + opcode payload，64B cache line 内打包。

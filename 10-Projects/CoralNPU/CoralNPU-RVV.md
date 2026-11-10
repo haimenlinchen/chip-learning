@@ -34,6 +34,31 @@ RVV 1.0 解耦向量后端：标量前端把向量指令作为“命令”派发
 - 执行单元：2× VALU、2× VMUL/MAC、1× VDIV、2× VFALU、1× VFDIV、1× Reduction/Permute。
 - VROB 16 项，保证精确异常与顺序退休；支持异步写回标量/浮点寄存器（`vfmv.f.s`、reduction、`vsetvl`）。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    SC["Scalar Dispatch"] --> CQ["Command Queue (8)"]
+    CQ --> VD["Vector Decode<br/>DE1 / DE2"]
+    VD --> UQ["Uop Queue (16)"]
+    UQ --> DISP["Dispatch + RAW/WAW Rename"]
+
+    DISP --> R1["RS: VALU x2"]
+    DISP --> R2["RS: VMUL/MAC x2"]
+    DISP --> R3["RS: VDIV"]
+    DISP --> R4["RS: VFALU x2 / VFDIV"]
+    DISP --> R5["RS: Reduction / Permute"]
+
+    R1 --> VRF["Vector Regfile<br/>32 x 128-bit"]
+    R2 --> VRF
+    R3 --> VRF
+    R4 --> VRF
+    R5 --> VRF
+    VRF --> VROB["Vector ROB (16)"]
+    VROB --> SWB["Scalar / Float Writeback"]
+    LSU["LSU"] <--> VRF
+```
+
 ## 关键细节
 
 - LSU 支持 unit-stride、strided、ordered/unordered indexed（gather/scatter）、masked、fault-only-first（`vle8ff.v`）。

@@ -30,6 +30,18 @@ asic-cosim 用统一的控制面（SAI/CLI/PTF）驱动五种执行环境，用�
 | LAB | i2c/PCIe 真实硬件 | 真实 | 硅后 | 实验室验证、模拟前端 |
 | NOMODEL | 无模型 | 最快 | 无 | Python 脚本/测试框架开发 |
 
+## 架构图
+
+```mermaid
+flowchart TB
+    TEST["Same test corpus<br/>SAI / CLI / PTF / gtest"] --> ENV["Cosim Control Plane"]
+    ENV --> CM["CMODEL<br/>fast, functional"]
+    ENV --> EMU["EMU<br/>PCIe / kernel / DMA"]
+    ENV --> RTL["RTL<br/>cycle / signal"]
+    ENV --> LAB["LAB<br/>real silicon"]
+    ENV --> NM["NOMODEL<br/>script development"]
+```
+
 ## 如何工作
 
 - `cmodel`：`clxsim_cmodel_t` 实现 `clxsim_chip_i`，链接 `libcx_model.so`/`libutils.so`。

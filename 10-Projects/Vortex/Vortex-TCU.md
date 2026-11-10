@@ -28,6 +28,20 @@ Vortex 的张量核单元：支持 WMMA/WGMMA，把 `C += A·B` 的 tile 展开�
 4. FEDP（fused element dot product）网格计算。
 5. 结果累加到 C 寄存器并提交。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    INS["WMMA / WGMMA instruction"] --> SEQ["Micro-op Sequencer"]
+    SEQ --> CORE["TCU Core"]
+    REG["Register File"] --> CORE
+    SMEM["Shared Memory / LMEM"] --> CORE
+    META["Sparse metadata / MX scale"] --> CORE
+    CORE --> FEDP["FEDP Grid<br/>fused element dot product"]
+    FEDP --> ACC["Accumulator C<br/>8 / 16 / 32 regs"]
+    DXA["DXA"] -->|tile copy + K-major| SMEM
+```
+
 ## 关键细节
 
 - 指令：`WMMA`、`WGMMA`、`WMMA_SP`、`WGMMA_SP`、`TCU_LD`；R-type，opcode `0x0B`，`funct7=2`。

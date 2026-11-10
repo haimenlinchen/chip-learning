@@ -35,6 +35,23 @@ Schedule → Fetch → Decode → Issue → Execute → Commit
 - Execute：ALU、FPU、LSU、SFU、TCU。
 - Commit：写回寄存器并更新 scoreboard。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    SCH["Warp Scheduler<br/>+ IPDOM + Inflight"] --> F["Fetch"]
+    F --> D["Decode"]
+    D --> I["Issue<br/>IBuffer + Scoreboard<br/>+ Operand Collector"]
+    I --> E["Execute"]
+    E --> C["Commit"]
+
+    E --- ALU["ALU"]
+    E --- FPU["FPU"]
+    E --- LSU["LSU"]
+    E --- SFU["SFU"]
+    E --- TCU["TCU"]
+```
+
 ## 关键细节
 
 - 每个 scheduler 每周期发一个 warp；`ISSUE_WIDTH` 可配。

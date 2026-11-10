@@ -29,6 +29,20 @@ CMODEL 是交换 ASIC 的预编译功能模型：`libcx_model.so` + `libutils.so
 - `clxsim_cmodel_t` 实现 `clxsim_chip_i`，提供 startup/shutdown/ticking/recirc 等接口。
 - 支持 packet send/recv、寄存器访问、backdoor load。
 
+## 架构图
+
+```mermaid
+flowchart LR
+    PKT["Packet in"] --> IGR["IGR<br/>CIA / DIS / FPU / FWR / TDS"]
+    IGR --> PP["PP / PL<br/>parser + lookup"]
+    PP --> TM["TM<br/>traffic manager"]
+    TM --> PCX["PCX<br/>packet crossbar"]
+    PCX --> EGR["EGR<br/>CIA / RWI / RWO / RWX"]
+    EGR --> OUT["Packet out"]
+    PP --- TBL["SRAM / TCAM / hash"]
+    TM --- BUF["Buffers"]
+```
+
 ## 关键细节
 
 - NB：1 pie × 25.6T；KG：2 pie × 51.2T。

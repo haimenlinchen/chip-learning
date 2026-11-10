@@ -10,6 +10,8 @@ created: 2026-11-10
 
 ## CoralNPU
 
+关键术语：RTL（寄存器传输级；用于描述硬件）、RVV（RISC-V 向量扩展；用于向量计算）。
+
 ```text
 /localdata/linchen/coralnpu/
 ├── doc/overview.md                 架构总览
@@ -29,6 +31,8 @@ created: 2026-11-10
 
 ## Vortex
 
+关键术语：SIMT（单指令多线程；GPU 执行模型）、TCU（张量核；用于矩阵乘）。
+
 ```text
 /localdata/linchen/vortex/
 ├── docs/designs/microarchitecture.md        SIMT/流水线
@@ -45,6 +49,8 @@ created: 2026-11-10
 
 ## ASIC-Cosim
 
+关键术语：DPI（SystemVerilog 与 C 的接口；用于协同仿真）、EMU（硬件仿真；用于接近实速验证）。
+
 ```text
 /localdata/linchen/asic-cosim/
 ├── README.md                               构建/运行入口
@@ -58,6 +64,8 @@ created: 2026-11-10
 ```
 
 ## Clounix-SDK
+
+关键术语：HAL（硬件抽象层；屏蔽底层差异）、TOB（表操作总线；用于表项读写）。
 
 ```text
 /localdata/linchen/clounix-sdk-et/
@@ -77,3 +85,16 @@ created: 2026-11-10
 
 - [[Commands]]
 - [[Glossary]]
+
+## 概念速览
+
+| 概念 | 是什么 | 使用场景 | 延伸 |
+|---|---|---|---|
+| RTL | 寄存器传输级 | 描述与仿真硬件 | 对应 `hdl/` 目录 |
+| RVV | RISC-V 向量扩展 | 向量计算 | 对应 `rvv/` 目录 |
+| SIMT | 单指令多线程 | GPU 执行模型 | 对应 `sim/simx/` |
+| TCU | 张量核 | 矩阵乘加速 | 对应 tensor core 文档 |
+| DXA | 异步拷贝/多播单元 | 数据搬运 | 对应 DXA 文档 |
+| DPI | SV 与 C 的接口 | 协同仿真 | 对应 `rtl_dpi.h` |
+| HAL | 硬件抽象层 | 屏蔽底层差异 | 对应 `src/hal/` |
+| TOB | 表操作总线 | 表项读写 | 对应 `src/tob/` |

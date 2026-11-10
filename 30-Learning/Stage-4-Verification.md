@@ -50,18 +50,34 @@ bin/test_feature cmodel --debug -e --portlist=0,8,16,24
 
 ## 任务
 
-- [ ] 跑 cocotb + UVM
-- [ ] 理解 RTL/MPACT/Spike 三方 cosim
-- [ ] 理解 RVVI lockstep 与 ISG
+- [ ] 跑 cocotb（Python 驱动的 RTL 仿真框架；用于模块级功能验证） + UVM（通用验证方法学，SystemVerilog 验证框架；用于随机激励与覆盖率驱动验证）
+- [ ] 理解 RTL（寄存器传输级设计；仿真时作为黄金参考）/MPACT（CoralNPU 的参考模型；用于与 RTL 对照）/Spike（RISC-V 官方指令集模拟器；用作黄金参考） 三方 cosim（协同仿真，多个模型同步运行并逐项比对；用于发现模型与 RTL 的偏差）
+- [ ] 理解 RVVI（RISC-V 验证接口，暴露指令退休等观测点；用于 lockstep 比对） lockstep（锁步比对，参考模型与 RTL 逐指令同步；用于快速定位偏差） 与 ISG（指令序列生成器，自动产生随机激励；用于验证覆盖）
 - [ ] 跑 ASIC-Cosim 的一个 feature test
-- [ ] 对比 CMODEL/RTL 的同一用例
-- [ ] 理解 EMU 的 PCIe/knet 路径
+- [ ] 对比 CMODEL（C/C++ 行为级参考模型；用于软件提前开发与结果对照）/RTL 的同一用例
+- [ ] 理解 EMU（硬件仿真加速器，用 FPGA/专用硬件承载 RTL；用于大规模系统与软件验证） 的 PCIe/knet 路径
 
 ## 产出
 
 - [ ] “同一测试在 CMODEL/RTL/LAB 上各能发现什么”对照表
 - [ ] “保真度 vs 速度”取舍笔记
 - [ ] 一份验证方法学总结
+
+## 概念速览
+
+| 概念 | 是什么 | 使用场景 | 延伸 |
+|---|---|---|---|
+| cocotb | Python 驱动的 RTL 仿真框架 | 模块级功能验证 | 与 UVM 相比更轻量，适合小型模块与快速回归 |
+| UVM | 通用验证方法学 | 随机激励与覆盖率驱动验证 | 基于 SystemVerilog，适合芯片级 TB 复用 |
+| RTL | 寄存器传输级设计 | 仿真时的黄金参考 | 只有 RTL 能暴露周期、时序与微架构问题 |
+| MPACT | CoralNPU 的参考模型 | 与 RTL 对照 | 参考模型跑得快，但需警惕与 RTL 同时出错 |
+| Spike | RISC-V 官方指令集模拟器 | 黄金参考 | 适合做指令流与架构状态的独立对照 |
+| cosim | 协同仿真 | 发现模型与 RTL 的偏差 | 三方 cosim 比两方更容易定位谁错 |
+| RVVI | RISC-V 验证接口 | lockstep 比对 | 提供指令退休等观测点，便于逐指令同步 |
+| lockstep | 锁步比对 | 快速定位偏差 | 参考与实现逐指令同步，偏差出现处即嫌疑点 |
+| ISG | 指令序列生成器 | 验证覆盖 | 自动产生随机激励，扩大状态空间 |
+| CMODEL | C/C++ 行为级参考模型 | 软件提前开发与结果对照 | 便宜、跑得快，但保真度低于 RTL |
+| EMU | 硬件仿真加速器 | 大规模系统与软件验证 | 比 RTL 仿真快，能跑驱动与 PCIe 路径 |
 
 ## 自检问题
 

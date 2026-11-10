@@ -9,7 +9,7 @@ created: 2026-11-10
 
 # 芯片学习 Vault
 
-> 目标：从 RTL/微架构到验证，再到软硬件接口，建立可迁移的芯片理解。
+> 目标：从 RTL（寄存器传输级，用寄存器与组合逻辑描述硬件的抽象层；用于芯片设计与仿真）/微架构到验证，再到软硬件接口，建立可迁移的芯片理解。
 
 ## 从这里开始
 
@@ -21,10 +21,10 @@ created: 2026-11-10
 
 ## 项目
 
-- [[CoralNPU]] — 开源 RISC-V 边缘 ML NPU IP
-- [[Vortex]] — 开源 RISC-V GPGPU 全栈
-- [[Clounix-SDK]] — 交换 ASIC SDK
-- [[ASIC-Cosim]] — 交换 ASIC 多保真度协同仿真平台
+- [[CoralNPU]] — 开源 RISC-V 边缘 ML NPU IP（NPU：神经网络处理器，专用 AI 推理加速器；用于可穿戴、手机、边缘设备）
+- [[Vortex]] — 开源 RISC-V GPGPU 全栈（GPGPU：通用 GPU 计算，用 GPU 做非图形的高吞吐计算；用于并行负载）
+- [[Clounix-SDK]] — 交换 ASIC SDK（ASIC：专用集成电路，为特定任务定制的芯片；SDK 用于配置交换芯片、开发驱动）
+- [[ASIC-Cosim]] — 交换 ASIC 多保真度协同仿真平台（保真度：模型与硬件行为的一致程度；用于在仿真速度与精度之间取舍）
 
 ## 技术主题
 

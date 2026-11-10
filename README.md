@@ -8,17 +8,17 @@ created: 2026-11-10
 
 # Chip Learning Vault
 
-一个用于学习芯片架构、验证与软硬件接口的 Obsidian vault。
+一个用于学习芯片架构、验证与软硬件接口的 Obsidian（Markdown 笔记软件；用于本地知识库）vault（Obsidian 的笔记库；一个文件夹即一个 vault）。
 
 ## 快速开始
 
 1. 用 Obsidian 打开本目录（`Open folder as vault`）。
 2. 从 `00-Home/Home.md` 开始。
 3. 推荐安装插件：
-   - **Dataview**：动态索引（Home/MOC 里的查询需要它）
-   - **Templater**：模板变量（`{{date}}`、`{{title}}`）
+   - **Dataview**（Obsidian 查询插件；用查询动态生成列表/表格）：动态索引（Home/MOC（Map of Content，内容地图/索引页；用于组织入口）里的查询需要它）
+   - **Templater**（模板插件；用于自动填充日期/标题）：模板变量（`{{date}}`、`{{title}}`）
    - **Advanced Tables**：表格编辑
-   - **Excalidraw**：手绘架构图（可选）
+   - **Excalidraw**（手绘风格绘图插件；用于画架构图）：手绘架构图（可选）
    - **Git**：版本管理（可选）
 
 ## 目录
@@ -49,7 +49,7 @@ Templates/      笔记模板
 python3 scripts/validate_vault.py
 ```
 
-CI 会在 push/PR 时运行同一脚本，检查 wikilink、frontmatter 与 Canvas JSON。
+CI（持续集成；用于自动校验）会在 push/PR 时运行同一脚本，检查 wikilink、frontmatter 与 Canvas JSON（Obsidian 白板文件格式；用于保存手绘图）。
 
 ## 推荐阅读顺序
 

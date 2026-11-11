@@ -10,6 +10,23 @@ created: 2026-11-10
 
 目录树用于定位文件；先读哪个文件、按什么顺序读，由各项目 Hub 的「代码阅读路线」决定。本页只回答“东西在哪”。
 
+## tiny-gpu
+
+关键术语：SIMT（单指令多线程；GPU 执行模型）、LSU（加载存储单元；处理 load/store）。阅读顺序见 [[Stage-0-tiny-gpu]]。
+
+```text
+/localdata/linchen/tiny-gpu/
+├── README.md                    架构 / ISA / 执行流程
+├── src/gpu.sv                   顶层：DCR、dispatch、cores、memory controllers
+├── src/dispatch.sv              block 划分与 core 分发
+├── src/core.sv                  每线程寄存器 / ALU / LSU / PC
+├── src/scheduler.sv             六状态控制流
+├── src/controller.sv            访存仲裁与带宽节流
+├── test/test_matadd.py          矩阵加 kernel 与断言
+├── test/test_matmul.py          矩阵乘 kernel 与断言
+└── test/helpers/                时钟、内存模型与 trace 格式化
+```
+
 ## CoralNPU
 
 关键术语：RTL（寄存器传输级；用于描述硬件）、RVV（RISC-V 向量扩展；用于向量计算）。

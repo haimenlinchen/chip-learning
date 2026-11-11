@@ -59,4 +59,6 @@ CI（持续集成；用于自动校验）会在 push/PR 时运行同一脚本，
 4. `10-Projects/CoralNPU/CoralNPU.md`
 5. `30-Learning/Stage-1-Scalar-Core.md`
 
+Verilog 或仿真经验不足时，先做 `30-Learning/Stage-0-tiny-gpu.md`（3–5 天）再读第 5 步。
+
 读代码时，先看各项目 Hub 的「代码阅读路线」：它给出从文档、顶层接线到单条指令/调用链、再到验证的顺序，每一步都带“读完能回答”的自检问题。阶段笔记只引用路线中的对应步骤，不重复展开。

@@ -16,11 +16,14 @@ created: 2026-11-10
 
 | 阶段 | 主题 | 主项目 | 时间 | 核心产出 |
 |---|---|---|---|---|
+| [[Stage-0-tiny-gpu]] | GPU 热身（可选） | tiny-gpu | 3–5 天 | 一条 LDR 路径图 |
 | [[Stage-1-Scalar-Core]] | 单核流水线 | CoralNPU | 2–3 周 | 一条指令的时序图 |
 | [[Stage-2-RVV-VME]] | RVV（RISC-V 向量扩展；用于向量与矩阵运算加速） / 矩阵 | CoralNPU | 3–4 周 | RVV/VME（CoralNPU 的矩阵扩展单元；用于 tile 级矩阵运算） 数据流图 |
 | [[Stage-3-GPU]] | SIMT（单指令多线程执行模型，一个 warp 的线程共享指令流；用于 GPU 吞吐计算） / GPU（图形处理器，也用于通用并行计算） | Vortex | 4–6 周 | GPU 存储层次 + 性能数据 |
 | [[Stage-4-Verification]] | 验证方法学 | CoralNPU + ASIC-Cosim | 2–3 周 | 保真度对照表 |
 | [[Stage-5-SDK]] | 软硬件接口 | Clounix-SDK | 1–2 周 | API → 表项调用链 |
+
+> Stage 0 可选：用 `/localdata/linchen/tiny-gpu` 上约 1.3k 行 RTL 的最小 GPU 补齐 Verilog、仿真与 SIMT 基础，不替代 Stage 1。
 
 ## 原则
 
@@ -32,6 +35,7 @@ created: 2026-11-10
 
 ## 最小可行闭环
 
+- [ ] tiny-gpu 跑通 `matadd`/`matmul`，保存 trace
 - [ ] CoralNPU 跑通 `--instr_trace`
 - [ ] 手画 `load` 路径
 - [ ] 加一个 CSR（控制状态寄存器；用于配置、异常处理与性能计数）/指令并通过 cocotb（Python 驱动的 RTL 仿真框架；用于模块级功能验证）

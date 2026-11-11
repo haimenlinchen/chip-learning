@@ -10,6 +10,7 @@ created: 2026-11-10
 
 | 阶段 | 主题 | 主项目 | 目标 |
 |---|---|---|---|
+| [[Stage-0-tiny-gpu]] | GPU 热身（可选） | tiny-gpu（约 1.3k 行 RTL 的教学 GPU；用于补齐 Verilog 与 SIMT 基础） | 跑通两个 kernel 并加一条指令 |
 | [[Stage-1-Scalar-Core]] | 单核流水线 | CoralNPU（开源 RISC-V 边缘 NPU IP；用于入门标量核与验证） | 讲清一条指令从取指到退休 |
 | [[Stage-2-RVV-VME]] | RVV（RISC-V Vector Extension，向量扩展；用于向量/矩阵计算） / 矩阵 | CoralNPU | 理解解耦执行与 tile 数据流 |
 | [[Stage-3-GPU]] | SIMT（单指令多线程；GPU 线程执行模型） / GPU | Vortex（开源 RISC-V GPGPU 全栈；用于 GPU 进阶） | 理解 warp、cache、TCU |

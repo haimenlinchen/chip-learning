@@ -52,6 +52,7 @@ created: 2026-11-10
 
 ## 学习阶段
 
+- [[Stage-0-tiny-gpu]]
 - [[Stage-1-Scalar-Core]]
 - [[Stage-2-RVV-VME]]
 - [[Stage-3-GPU]]
